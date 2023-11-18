@@ -2,15 +2,31 @@
 POST http://127.0.0.1:8000/auth/signup/ 
 Content-Type: application/json 
 
-{"username": "kofi4", "password": "Pass1234!", "email": "adam@mail4.com","first_name":"mama", "last_name":"woman" }
+{"username": "adminuser", "password": "admin", "email": "adam@mail4.com","first_name":"mama", "last_name":"woman" }
 
 ###
 
-POST http://127.0.0.1:8000/auth/login/ 
+POST http://127.0.0.1:8000/auth/login/
+Content-Type: application/json 
+
+{ "username": "kofi4", "password": "Pass1234!" }
+
+###
+GET http://127.0.0.1:8000/auth/user/ 
+Content-Type: application/json 
+
+###
+GET http://127.0.0.1:8000/auth/user/4
 Content-Type: application/json 
 
 
-{ "username": "kofi4", "password": "Pass1234!" }
+###
+GET http://127.0.0.1:8000/product/products/ 
+Content-Type: application/json 
+
+
+
+
 
 ###
 

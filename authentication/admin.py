@@ -20,6 +20,5 @@ from .models import Profile
 # #unregister initial User
 admin.site.register(Profile)
 
-# #Register User
 
 

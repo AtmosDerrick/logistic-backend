@@ -1,10 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save 
 
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    User = models.OneToOneField(User, related_name='profile', null=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     role = models.CharField(max_length=100, default='')
@@ -16,7 +15,7 @@ class Profile(models.Model):
     
     
     def __str__(self):
-        return self.User.username
+        return self.first_name
 
 
 
