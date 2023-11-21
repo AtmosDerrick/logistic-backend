@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Product(models.Model):
-    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    User = models.ForeignKey(User,default=None, on_delete=models.CASCADE)
     sender_name = models.CharField(max_length=150)
     sender_contact = models.CharField(max_length=10)
     sender_email = models.CharField(max_length=100, default='')
@@ -27,7 +27,7 @@ class Product(models.Model):
     reciever_address = models.CharField(max_length=100)
     reciever_location = models.CharField(max_length=100)
     
-    status = models.CharField(max_length=100)    
+    product_status = models.CharField(max_length=100)    
     is_cancel = models.BooleanField(default=False)
     datetime = models.DateTimeField(auto_now=True)
 

@@ -7,6 +7,7 @@ from .serializers import UserSerializer, ProfileSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
 
 
@@ -84,6 +85,13 @@ def oneProfile(request,id):
         
     serializer = ProfileSerializer(user_info)
     return JsonResponse({'message':'ok','data':serializer.data})
+
+
+@api_view(['POST'])
+def user_logout(request):
+    logout(request)
+    return JsonResponse({'message':'Logout Successful'})
+
 
 
 
