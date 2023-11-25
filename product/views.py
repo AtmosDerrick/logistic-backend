@@ -56,7 +56,7 @@ def product_recieve(request, location):
 def product_shipping(request, location):
   
     try:
-        recieve_product = Product.objects.filter(sender_location=location, product_status='shipping')
+        recieve_product = Product.objects.filter(sender_location=location, product_status='shipped')
         
     except Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -68,13 +68,47 @@ def product_shipping(request, location):
 def product_arrival(request, location):
   
     try:
-        recieve_product = Product.objects.filter(destination=location, product_status='arrival')
+        recieve_product = Product.objects.filter(destination=location, product_status='shipped' )
         
     except Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer =ProductSerializer(recieve_product, many=True)
     return JsonResponse({'message':'ok','data':serializer.data})
+
+
+
+
+
+@api_view(['GET'])
+def product_delivery(request, code, location):
+  
+    try:
+        recieve_product = Product.objects.get(product_code = code, destination=location)
+        
+        
+        
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    serializer = ProductSerializer(recieve_product, many=False)
+    return JsonResponse({'message':'ok','data':serializer.data})
+
+
+
+# @api_view(['GET', 'PUT'])
+# def product_one(request, code):
+  
+#     try:
+#         recieve_product = Product.objects.get(product_code = code)
+        
+        
+        
+#     except Product.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+        
+#     serializer =ProductSerializer(recieve_product, many=True)
+#     return JsonResponse({'message':'ok','data':serializer.data})
 
 
 

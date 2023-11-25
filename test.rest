@@ -31,6 +31,10 @@ GET http://127.0.0.1:8000/product/products/
 Content-Type: application/json 
 
 ###
+GET http://127.0.0.1:8000/product/oneproduct/18662b0b 
+Content-Type: application/json 
+
+###
 GET http://127.0.0.1:8000/product/arrivalproduct/ACCRA/ 
 Content-Type: application/json 
 

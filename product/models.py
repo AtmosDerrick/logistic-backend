@@ -12,7 +12,7 @@ class Product(models.Model):
     
     
     product = models.TextField(max_length=150)
-    product_code = models.CharField(max_length=150)
+    product_code = models.CharField(max_length=150, primary_key=True)
 
     quantity = models.IntegerField() 
     weight = models.IntegerField() 
@@ -27,6 +27,9 @@ class Product(models.Model):
     reciever_address = models.CharField(max_length=100)
     reciever_location = models.CharField(max_length=100)
     
+    shipping_confirmation = models.BooleanField(default=True)
+    arrival_confirmation = models.BooleanField(default=True)
+
     product_status = models.CharField(max_length=100)    
     is_cancel = models.BooleanField(default=False)
     datetime = models.DateTimeField(auto_now=True)
