@@ -27,8 +27,8 @@ class Product(models.Model):
     reciever_address = models.CharField(max_length=100)
     reciever_location = models.CharField(max_length=100)
     
-    shipping_confirmation = models.BooleanField(default=True)
-    arrival_confirmation = models.BooleanField(default=True)
+    shipping_confirmation = models.BooleanField(null=True)
+    arrival_confirmation = models.BooleanField(null=True)
 
     product_status = models.CharField(max_length=100)    
     is_cancel = models.BooleanField(default=False)

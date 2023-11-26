@@ -1,5 +1,5 @@
 from django.urls import path
-from product.views import create_product,product_list,product_recieve,product_shipping,product_arrival,product_delivery
+from product.views import create_product,product_list,product_recieve,product_shipping,product_arrival,product_delivery,product_one
 
 
 urlpatterns = [
@@ -9,7 +9,7 @@ urlpatterns = [
     path('shippingproduct/<location>/', product_shipping),
     path('arrivalproduct/<location>/', product_arrival),
     path('deliveryproduct/productcode/<code>/location/<location>', product_delivery),
-    path('oneproduct/<code>/', product_delivery),
+    path('oneproduct/<code>/', product_one),
 
  
 

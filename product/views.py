@@ -78,13 +78,18 @@ def product_arrival(request, location):
 
 
 
-
-
-@api_view(['GET'])
-def product_delivery(request, code, location):
+@api_view(['GET','PUT'])
+def product_one(request, code):
   
     try:
-        recieve_product = Product.objects.get(product_code = code, destination=location)
+        recieve_product = Product.objects.get(product_code = code)
+        
+        if request.method == 'PUT':
+            serializer = ProductSerializer(recieve_product, data = request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
         
         
         
@@ -96,19 +101,24 @@ def product_delivery(request, code, location):
 
 
 
-# @api_view(['GET', 'PUT'])
-# def product_one(request, code):
+@api_view(['GET'])
+def product_delivery(request, code, location):
   
-#     try:
-#         recieve_product = Product.objects.get(product_code = code)
+    try:
+        recieve_product = Product.objects.get(product_code = code, destination=location)
         
         
+    except Product.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
         
-#     except Product.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-        
-#     serializer =ProductSerializer(recieve_product, many=True)
-#     return JsonResponse({'message':'ok','data':serializer.data})
+    serializer = ProductSerializer(recieve_product, many=False)
+    return JsonResponse({'message':'ok','data':serializer.data})
+
+
+
+
+
+
 
 
 
