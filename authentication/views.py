@@ -56,6 +56,8 @@ def test_token(request):
 
 
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_profile(request):
     user_info_serializer = ProfileSerializer(data=request.data)
     if user_info_serializer.is_valid():
@@ -65,8 +67,8 @@ def create_profile(request):
 
 
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def profile(request):
     user_info = Profile.objects.all()
     serializer = ProfileSerializer(user_info, many=True)
@@ -74,6 +76,8 @@ def profile(request):
 
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 # @authentication_classes([SessionAuthentication, TokenAuthentication])
 # @permission_classes([IsAuthenticated])
 def oneProfile(request,id):
@@ -88,6 +92,7 @@ def oneProfile(request,id):
 
 
 @api_view(['POST'])
+
 def user_logout(request):
     logout(request)
     return JsonResponse({'message':'Logout Successful'})

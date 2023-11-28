@@ -10,6 +10,8 @@ from .models import Product
 from django.http import JsonResponse
 
 
+
+
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,6 +20,8 @@ import uuid
 
 # Create your views here.
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_product(request):
     request.data['product_code'] = str(uuid.uuid4())[:8]  
 
@@ -29,10 +33,13 @@ def create_product(request):
            "product": serializer.data
         })
         
-    return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST )
+    return Response(serializer.errors, status = status.HTTP_200_OK )
 
 #all products
+
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_list(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)  # Specify many=True for queryset
@@ -41,6 +48,8 @@ def product_list(request):
 #get recieved product
 #all products
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_recieve(request, location):
   
     try:
@@ -53,6 +62,8 @@ def product_recieve(request, location):
     return JsonResponse({'message':'ok','data':serializer.data})
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_shipping(request, location):
   
     try:
@@ -65,6 +76,8 @@ def product_shipping(request, location):
     return JsonResponse({'message':'ok','data':serializer.data})
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_arrival(request, location):
   
     try:
@@ -79,16 +92,30 @@ def product_arrival(request, location):
 
 
 @api_view(['GET','PUT'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_one(request, code):
   
     try:
         recieve_product = Product.objects.get(product_code = code)
         
         if request.method == 'PUT':
-            serializer = ProductSerializer(recieve_product, data = request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+            if(recieve_product.shipping_confirmation == True):
+                request.data['shipping_confirmation'] = False  
+                serializer = ProductSerializer(recieve_product, data = request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+            elif(recieve_product.shipping_confirmation == False):
+                print(recieve_product.shipping_confirmation)
+                return Response({"message":"Done"})
+                
+            else:
+                request.data['shipping_confirmation'] = True  
+                serializer = ProductSerializer(recieve_product, data = request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)   
         
         
@@ -102,6 +129,8 @@ def product_one(request, code):
 
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_delivery(request, code, location):
   
     try:

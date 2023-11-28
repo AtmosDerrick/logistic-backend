@@ -6,7 +6,7 @@ class Product(models.Model):
     User = models.ForeignKey(User,default=None, on_delete=models.CASCADE)
     sender_name = models.CharField(max_length=150)
     sender_contact = models.CharField(max_length=10)
-    sender_email = models.CharField(max_length=100, default='')
+    sender_email = models.EmailField(max_length=100, default='')
     sender_address = models.CharField(max_length=100)
     sender_location = models.CharField(max_length=100)
     
@@ -23,7 +23,7 @@ class Product(models.Model):
     
     reciever_name = models.CharField(max_length=150)
     reciever_contact = models.CharField(max_length=10)
-    reciever_email = models.CharField(max_length=100, default='')
+    reciever_email = models.EmailField(max_length=100, default='')
     reciever_address = models.CharField(max_length=100)
     reciever_location = models.CharField(max_length=100)
     
