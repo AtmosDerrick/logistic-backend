@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Product(models.Model):
+  
     User = models.ForeignKey(User,default=None, on_delete=models.CASCADE)
     sender_name = models.CharField(max_length=150)
     sender_contact = models.CharField(max_length=10)

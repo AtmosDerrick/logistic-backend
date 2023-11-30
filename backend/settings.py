@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    
     'authentication',
     'corsheaders',
     'product',
     'shipping',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,6 +61,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # You can choose a different session engine
+SESSION_COOKIE_AGE = 1209600  # Set the session cookie age in seconds (e.g., 2 weeks)
+SESSION_SAVE_EVERY_REQUEST = True
+
 
 ROOT_URLCONF = 'backend.urls'
 CORS_ORIGIN_ALLOW_ALL = True

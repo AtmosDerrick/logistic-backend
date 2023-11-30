@@ -17,6 +17,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Profile
 
+from django.contrib.sessions.models import Session
+
+
 
 # Create your views here.
 @api_view(['POST'])
@@ -27,6 +30,10 @@ def login(request):
         return Response({"detail":"Not found"},status = status.HTTP_400_BAD_REQUEST )
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(instance=user)
+    
+     # Save the token in the session
+    request.session['auth_token'] = token.key
+    request.session.save()
     return Response({
             "token": token.key, "user": serializer.data
         })
