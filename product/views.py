@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from .models import Product
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -24,10 +25,16 @@ import uuid
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_product(request):
+    user = request.user
     request.data['product_code'] = str(uuid.uuid4())[:8]  
+    request.data['product_status'] = 'recieved'
+ 
+    
+
 
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid():
+      
         serializer.save()
     
         return Response({
@@ -39,9 +46,11 @@ def create_product(request):
 #all products
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_list(request):
+    user = request.user
+    print(user)
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)  # Specify many=True for queryset
     return JsonResponse({'message': 'ok', 'data': serializer.data})
@@ -49,8 +58,8 @@ def product_list(request):
 #get recieved product
 #all products
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_recieve(request, location):
   
     try:
@@ -63,8 +72,8 @@ def product_recieve(request, location):
     return JsonResponse({'message':'ok','data':serializer.data})
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_shipping(request, location):
   
     try:
@@ -77,8 +86,8 @@ def product_shipping(request, location):
     return JsonResponse({'message':'ok','data':serializer.data})
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_arrival(request, location):
   
     try:
@@ -93,8 +102,8 @@ def product_arrival(request, location):
 
 
 @api_view(['GET','PUT'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_one(request, code):
   
     try:
@@ -132,8 +141,8 @@ def product_one(request, code):
 
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def product_delivery(request, code, location):
   
     try:

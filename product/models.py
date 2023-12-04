@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 class Product(models.Model):
   
     User = models.ForeignKey(User,default=None, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True,  blank=True)
+
     sender_name = models.CharField(max_length=150)
     sender_contact = models.CharField(max_length=10)
     sender_email = models.EmailField(max_length=100, default='')
@@ -13,7 +15,7 @@ class Product(models.Model):
     
     
     product = models.TextField(max_length=150)
-    product_code = models.CharField(max_length=150, primary_key=True)
+    product_code = models.CharField(max_length=150)
 
     quantity = models.IntegerField() 
     weight = models.IntegerField() 
@@ -37,7 +39,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return self.product_code
+        return str(self.id)
 
 
 
