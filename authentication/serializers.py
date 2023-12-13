@@ -1,15 +1,26 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Profile
+from .model import UserProfile
+# from .models import Profile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta(object):
         model = User
-        fields = ['id', 'username', 'password', 'email', 'first_name', 'last_name']
+        fields = ("username", "password", "first_name", "last_name", 'email')
+        
+        
+        
 class ProfileSerializer(serializers.ModelSerializer):   
     class Meta(object):
-        model = Profile
-        fields = ['User', 'first_name', 'last_name', 'role', 'address', 'telephone', 'ghanacard_no', 'location', 'date_created']
+        model = UserProfile
+        fields = ['User','profileImage' , 'role', 'address', 'telephone', 'ghanacard_no', 'location', 'date_created']
+        
+        def get_photo_url(self, obj):
+            request = self.context.get('request')
+            image_profile = obj.profileImage.url
+            return request.build_absolute_uri(image_profile)
         
         
+        
+            
     

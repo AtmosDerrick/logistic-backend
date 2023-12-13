@@ -63,7 +63,7 @@ def product_list(request):
 def product_recieve(request, location):
   
     try:
-        recieve_product = Product.objects.filter(sender_location=location, product_status='Recieved')
+        recieve_product = Product.objects.filter(sender_location=location, product_status='recieved')
         
     except Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -112,12 +112,15 @@ def product_one(request, code):
         if request.method == 'PUT':
             if(recieve_product.shipping_confirmation == True):
                 request.data['shipping_confirmation'] = False  
+                request.data['product_status'] = 'shipping' 
                 serializer = ProductSerializer(recieve_product, data = request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data)
             elif(recieve_product.shipping_confirmation == False):
                 print(recieve_product.shipping_confirmation)
+               
+
                 return Response({"message":"Done"})
                 
             else:
