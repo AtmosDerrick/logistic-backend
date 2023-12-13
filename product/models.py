@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # Create your models here.
 class Product(models.Model):
   
@@ -8,27 +9,20 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True,  blank=True)
 
     sender_name = models.CharField(max_length=150)
-    sender_contact = models.CharField(max_length=10)
-    sender_email = models.EmailField(max_length=100, default='')
-    sender_address = models.CharField(max_length=100)
+    sender_contact = models.CharField(max_length=10) 
     sender_location = models.CharField(max_length=100)
     
     
-    product = models.TextField(max_length=150)
+    product_name = models.TextField(max_length=150)
     product_code = models.CharField(max_length=150)
-
     quantity = models.IntegerField() 
-    weight = models.IntegerField() 
     item_type = models.CharField(max_length=100)
-    destination = models.CharField(max_length=150)
     handle_preference = models.CharField(max_length=150)
     price = models.IntegerField() 
     
     reciever_name = models.CharField(max_length=150)
     reciever_contact = models.CharField(max_length=10)
-    reciever_email = models.EmailField(max_length=100, default='')
     reciever_address = models.CharField(max_length=100)
-    reciever_location = models.CharField(max_length=100)
     
     shipping_confirmation = models.BooleanField(null=True)
     arrival_confirmation = models.BooleanField(null=True)
@@ -39,7 +33,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return str(self.id)
+        return str(self.pro)
 
 
 

@@ -2,7 +2,7 @@
 POST http://127.0.0.1:8000/auth/signup/ 
 Content-Type: application/json 
 
-{"username": "adminuser1", "password": "admin", "email": "adam@mail4.com","first_name":"mama", "last_name":"woman" }
+{"username": "admin", "password": "admin", "email": "adam@mail4.com","first_name":"admin", "last_name":"woman", "role":"admin", "address":"accra", "telephone":"0241732077", "ghanacard_no":"1212121", "location":"accra" }
 
 ###
 POST http://127.0.0.1:8000/auth/login/

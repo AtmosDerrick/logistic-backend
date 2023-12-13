@@ -1,24 +1,22 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group,User
-from .models import UserProfile
+from django.contrib.auth.models import User
+from .models import Profile
+from django.contrib.auth.admin import UserAdmin
 
 
-# #Unregister Group
-# admin.site.unregister(Group)
+class AccountInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Accounts'
+    
 
-# #Mix Profile info into User info
-# class ProfileIninline(admin.StackedInline):
-#     model =Profile
-
-# #Extend User Model
-# class UserAdmin(admin.ModelAdmin):
-#     model = User
-    # inlines = [ProfileIninline]
-
-# # Register your models here.
-
-# #unregister initial User
-admin.site.register(UserProfile)
+class CustomiseUserAdmin (UserAdmin):
+    inlines = (AccountInline,)
+    
+    
+admin.site.unregister(User)
+admin.site.register(User, CustomiseUserAdmin )
+admin.site.register(Profile)
 
 
 
