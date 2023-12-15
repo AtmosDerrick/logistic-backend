@@ -7,6 +7,8 @@ from .serializers import ProductSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from .models import Package
+from authentication.models import Profile
+
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -26,8 +28,12 @@ import uuid
 @permission_classes([IsAuthenticated])
 def create_product(request):
     user = request.user
+    profile = Profile.objects.get(User=user)
+
+    
     request.data['package_code'] = str(uuid.uuid4())[:8]  
     request.data['product_status'] = 'recieved'
+    request.data['sender_location'] = profile.location
  
     
 
@@ -49,7 +55,7 @@ def create_product(request):
 # @permission_classes([IsAuthenticated])
 def product_list(request):
     user = request.user
-    print(user)
+    print(user.location)
     products = Package.objects.all()
     serializer = ProductSerializer(products, many=True)  # Specify many=True for queryset
     return JsonResponse({'message': 'ok', 'data': serializer.data})
@@ -57,11 +63,12 @@ def product_list(request):
 #get recieved product
 #all products
 @api_view(['GET'])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def product_recieve(request, location):
   
     try:
+        
         recieve_product = Package.objects.filter(sender_location=location, product_status='recieved')
         
     except Package.DoesNotExist:
