@@ -113,7 +113,7 @@ def product_arrival(request, location):
 def product_one(request, code):
   
     try:
-        recieve_product = Package.objects.get(product_code = code)
+        recieve_product = Package.objects.get(package_code = code)
         
         if request.method == 'PUT':
             if(recieve_product.shipping_confirmation == True):
