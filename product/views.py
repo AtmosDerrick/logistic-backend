@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from .serializers import ProductSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from .models import Product
+from .models import Package
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -26,7 +26,7 @@ import uuid
 @permission_classes([IsAuthenticated])
 def create_product(request):
     user = request.user
-    request.data['product_code'] = str(uuid.uuid4())[:8]  
+    request.data['package_code'] = str(uuid.uuid4())[:8]  
     request.data['product_status'] = 'recieved'
  
     
@@ -34,7 +34,6 @@ def create_product(request):
 
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid():
-      
         serializer.save()
     
         return Response({
@@ -51,7 +50,7 @@ def create_product(request):
 def product_list(request):
     user = request.user
     print(user)
-    products = Product.objects.all()
+    products = Package.objects.all()
     serializer = ProductSerializer(products, many=True)  # Specify many=True for queryset
     return JsonResponse({'message': 'ok', 'data': serializer.data})
 
@@ -63,9 +62,9 @@ def product_list(request):
 def product_recieve(request, location):
   
     try:
-        recieve_product = Product.objects.filter(sender_location=location, product_status='recieved')
+        recieve_product = Package.objects.filter(sender_location=location, product_status='recieved')
         
-    except Product.DoesNotExist:
+    except Package.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer =ProductSerializer(recieve_product, many=True)
@@ -77,9 +76,9 @@ def product_recieve(request, location):
 def product_shipping(request, location):
   
     try:
-        recieve_product = Product.objects.filter(sender_location=location, product_status='shipped')
+        recieve_product = Package.objects.filter(sender_location=location, product_status='shipped')
         
-    except Product.DoesNotExist:
+    except Package.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer =ProductSerializer(recieve_product, many=True)
@@ -91,9 +90,9 @@ def product_shipping(request, location):
 def product_arrival(request, location):
   
     try:
-        recieve_product = Product.objects.filter(destination=location, product_status='shipped' )
+        recieve_product = Package.objects.filter(destination=location, product_status='shipped' )
         
-    except Product.DoesNotExist:
+    except Package.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer =ProductSerializer(recieve_product, many=True)
@@ -107,7 +106,7 @@ def product_arrival(request, location):
 def product_one(request, code):
   
     try:
-        recieve_product = Product.objects.get(product_code = code)
+        recieve_product = Package.objects.get(product_code = code)
         
         if request.method == 'PUT':
             if(recieve_product.shipping_confirmation == True):
@@ -135,7 +134,7 @@ def product_one(request, code):
         
         
         
-    except Product.DoesNotExist:
+    except Package.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer = ProductSerializer(recieve_product, many=False)
@@ -149,10 +148,10 @@ def product_one(request, code):
 def product_delivery(request, code, location):
   
     try:
-        recieve_product = Product.objects.get(product_code = code, destination=location)
+        recieve_product = Package.objects.get(product_code = code, destination=location)
         
         
-    except Product.DoesNotExist:
+    except Package.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
     serializer = ProductSerializer(recieve_product, many=False)

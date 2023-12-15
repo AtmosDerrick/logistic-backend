@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-class Product(models.Model):
+class Package(models.Model):
   
     User = models.ForeignKey(User,default=None, on_delete=models.CASCADE)
     id = models.AutoField(primary_key=True,  blank=True)
@@ -13,8 +13,8 @@ class Product(models.Model):
     sender_location = models.CharField(max_length=100)
     
     
-    product_name = models.TextField(max_length=150)
-    product_code = models.CharField(max_length=150)
+    package_name = models.TextField(max_length=150 )
+    package_code = models.CharField(max_length=150)
     quantity = models.IntegerField() 
     item_type = models.CharField(max_length=100)
     handle_preference = models.CharField(max_length=150)
@@ -33,7 +33,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return str(self.pro)
+        return str(self.package_name)
 
 
 

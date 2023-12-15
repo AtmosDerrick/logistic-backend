@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
-from product.models import Product
+from product.models import Package
 
 class Ship(models.Model):
 
     
-    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
+    product = models.ForeignKey(Package, default=None, on_delete=models.CASCADE)
     driver = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     shipping_id = models.AutoField(primary_key=True)
     shipping_datetime = models.DateTimeField(auto_now=True)
